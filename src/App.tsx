@@ -8,6 +8,7 @@ import Navbar from "react-bootstrap/Navbar"
 import ConfigSectionTitle from './Components/ConfigSectionTitle';
 import DataPointsContainer from './Containers/DataPointsContainer';
 import RegressionSettingsForm from './Containers/RegressionSettingsForm';
+import { trainAdaptive, trainUnadaptive } from './RegressionScript';
 
 function App() {
   const [dataPoints, setDataPoints] = React.useState<number[][]>([])
@@ -15,6 +16,9 @@ function App() {
   const [learningRate, setLearningRate] = React.useState(0)
   const [xDegree, setXDegree] = React.useState(0)
   const [isRunning, setIsRunning] = React.useState(false)
+  const startTraining = (iterations: number, learningRate: number, xDegree: number, isAdaptive: boolean, dataPoints: number[][]) => {
+
+  }
   return (
     <div className="App">
       <Container fluid>
@@ -24,7 +28,7 @@ function App() {
           </Navbar>
         </Row>
         <Row>
-          <Chart dataPointsArr={[[1, 4], [3, 5]]} functionWeights={[2, 4]}/>
+          <Chart dataPointsArr={dataPoints} functionWeights={[]}/>
         </Row>
         <Row style={{marginTop: "1rem"}}>
           <Col sm={12} md={4} xxl={2}>
@@ -33,7 +37,7 @@ function App() {
           </Col>
           <Col sm={12} md={4} xxl={5}>
           <ConfigSectionTitle title="Regression"/>
-          <RegressionSettingsForm trainAdaptive={() => {}} trainUnadaptive={() => {}}
+          <RegressionSettingsForm trainAdaptive={trainAdaptive} trainUnadaptive={trainUnadaptive}
            iterations={iterations} setIterations={setIterations} 
            learningRate={learningRate} setLearningRate={setLearningRate}
            xDegree={xDegree} setXDegree={setXDegree} 

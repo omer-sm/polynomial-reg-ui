@@ -11,7 +11,9 @@ interface IDataPointsContainerProps {
 export default function DataPointsContainer({dataPoints, setDataPoints}: IDataPointsContainerProps) {
     const [xVal, setXVal] = React.useState<number>(0)
     const [yVal, setYVal] = React.useState<number>(0)
-    const addDataPoint = (x:number, y:number) => {
+    const addDataPoint = (xStr:number, yStr:number) => {
+        const x: number = typeof xStr === "string" ? parseFloat(xStr) : xStr
+        const y: number = typeof yStr === "string" ? parseFloat(yStr) : yStr
         dataPoints.push([x, y])
         const newData: number[][] = []
         dataPoints.forEach(el => {newData.push(el)})

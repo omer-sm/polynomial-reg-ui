@@ -13,7 +13,7 @@ type chartPoint = {
 }
 type chartErrorPoint = {
     x: number,
-    y: [number, number]
+    y: [number, number] | number
 }
 
 export default function Chart({dataPointsArr, functionWeights}: IChartProps) {
@@ -38,7 +38,7 @@ export default function Chart({dataPointsArr, functionWeights}: IChartProps) {
             if (xPoints.includes(p.x)) {
                 dataPointsArr.forEach(point => { 
                     if (point[0] === p.x) {
-                        errorPlotArr.push({x: p.x, y: [p.y, point[1]]})
+                        errorPlotArr.push({x: p.x, y: functionWeights.length? [p.y, point[1]] : point[1]})
                     }
                 })
             }
@@ -51,14 +51,19 @@ export default function Chart({dataPointsArr, functionWeights}: IChartProps) {
         animationEnabled: true,
 		exportEnabled: true,
         theme: "dark1",
-        data: [{
+        data: functionWeights.length? [{
           type: "spline",
           dataPoints: funcPlot
         },
         {
           type: "error",
           dataPoints: errorPlot
-        }]
+        }] : [
+          {
+            type: "scatter",
+            markerSize: 15,
+            dataPoints: errorPlot
+          }]
       }
       return (
         <div style={{padding: "0"}}>
