@@ -16,7 +16,7 @@ export default function AddDataPointForm({addDataPoint, xVal, setXVal, yVal, set
     return (
         <>
         <Form.Label style={{textAlign: "start"}}>Add Point</Form.Label>
-        <InputGroup>
+        <InputGroup style={{flexWrap: "nowrap"}}>
             <InputGroup.Text>X</InputGroup.Text>
             <Form.Control type="number" value={xVal} onChange={e => {setXVal(e.target.value)}}/>
             <InputGroup.Text>Y</InputGroup.Text>
