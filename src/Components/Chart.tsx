@@ -4,8 +4,8 @@ import CanvasJSReact from '@canvasjs/react-charts'
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 interface IChartProps {
-    dataPointsArr: number[][],
-    functionWeights: number[],
+    dataPointsArrStateless: number[][],
+    functionWeightsStateless: number[],
 }
 type chartPoint = {
     x: number,
@@ -16,7 +16,14 @@ type chartErrorPoint = {
     y: [number, number] | number
 }
 
-export default function Chart({dataPointsArr, functionWeights}: IChartProps) {
+export default function Chart({dataPointsArrStateless, functionWeightsStateless}: IChartProps) {
+    const [funcPlot, setFuncPlot] = React.useState<chartPoint[]>([])
+    const [errorPlot, setErrorPlot] = React.useState<chartErrorPoint[]>([])
+    const [dataPointsArr, setdataPointsArr] = React.useState<number[][]>([])
+    React.useEffect(() => {
+        setdataPointsArr(dataPointsArrStateless)
+    }, [dataPointsArrStateless])
+    const [functionWeights, setFunctionWeights] = React.useState<number[]>([])
     const calcFunctionVal = (x: number):number => {
         return functionWeights.reduce((total, current, i) => total + current*(x**i), 0)
     }
@@ -45,8 +52,11 @@ export default function Chart({dataPointsArr, functionWeights}: IChartProps) {
         })
         return errorPlotArr
     }
-    const funcPlot = createFunctionPlot()
-    const errorPlot = createErrorPlot(funcPlot)
+    React.useEffect(() => {
+        setFunctionWeights(functionWeightsStateless)
+        setFuncPlot(createFunctionPlot())
+        setErrorPlot(createErrorPlot(funcPlot))
+    }, [functionWeightsStateless])
     const options = {
         animationEnabled: true,
 		exportEnabled: true,
