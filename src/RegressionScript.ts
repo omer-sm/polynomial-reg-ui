@@ -2,6 +2,7 @@ export const data = {
     iteration: 0,
     weights: [0],
     j: 0,
+    isRunning: false,
 }
 
 /**
@@ -27,6 +28,7 @@ const calcJ = (x: number, y: number, weights: number[]): [number[], number] => {
  * @returns [weights, j values]
  */
 export const trainUnadaptive = (xVals: number[], yVals: number[], weights: number[], learningRate: number, iterations: number): [number[], number[]] => {
+    data.isRunning = true
     const jVals: number[] = []
     for (let iter = 0; iter < iterations; iter++) {
         const currentJVals: number[] = []
@@ -39,6 +41,7 @@ export const trainUnadaptive = (xVals: number[], yVals: number[], weights: numbe
         jVals.push(currentJVals.reduce((total, current) => total + current)/currentJVals.length)
         data.j = jVals[iter]
     }
+    setTimeout(() => {data.isRunning = false}, 1000)
     return [weights, jVals]
 }
 /**
@@ -51,6 +54,7 @@ export const trainUnadaptive = (xVals: number[], yVals: number[], weights: numbe
  * @returns [weights, j values]
  */
 export const trainAdaptive = (xVals: number[], yVals: number[], weights: number[], learningRates: number[], iterations: number): [number[], number[]] => {
+    data.isRunning = true
     const jVals: number[] = []
     for (let iter = 0; iter < iterations; iter++) {
         const currentJVals: number[] = []
@@ -66,5 +70,6 @@ export const trainAdaptive = (xVals: number[], yVals: number[], weights: number[
         jVals.push(currentJVals.reduce((total, current) => total + current)/currentJVals.length)
         data.j = jVals[iter]
     }
+    setTimeout(() => {data.isRunning = false}, 1000)
     return [weights, jVals]
 }

@@ -14,6 +14,13 @@ export default function DataPointsContainer({dataPoints, setDataPoints}: IDataPo
     const addDataPoint = (xStr:number, yStr:number) => {
         const x: number = typeof xStr === "string" ? parseFloat(xStr) : xStr
         const y: number = typeof yStr === "string" ? parseFloat(yStr) : yStr
+        let flag = false
+        dataPoints.forEach((dataPoint) => {
+            if (dataPoint[0] === x) {
+                flag = true
+            }
+        })
+        if (flag) {return}
         dataPoints.push([x, y])
         const newData: number[][] = []
         dataPoints.forEach(el => {newData.push(el)})

@@ -23,6 +23,15 @@ function App() {
     isAdaptive? trainAdaptive(xVals, yVals, weights, new Array(xDegree).fill(learningRate), iterations)
     : trainUnadaptive(xVals, yVals, weights, learningRate, iterations)
   }
+  const [weights, setWeights] = React.useState<number[]>(data.weights)
+  React.useEffect(() => {
+    const intervalID = setInterval(() => {
+      if (data.isRunning) {
+        setWeights(data.weights)
+      }
+    }, 100)
+    return () => clearInterval(intervalID)
+  }, [])
   return (
     <div className="App">
       <Container fluid>
@@ -32,7 +41,7 @@ function App() {
           </Navbar>
         </Row>
         <Row>
-          <Chart dataPointsArrStateless={dataPoints} functionWeightsStateless={data.weights}/>
+          <Chart dataPointsArr={dataPoints} functionWeights={weights}/>
         </Row>
         <Row style={{marginTop: "1rem"}}>
           <Col sm={12} md={4} xxl={2}>

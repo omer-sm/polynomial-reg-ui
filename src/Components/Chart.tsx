@@ -1,83 +1,94 @@
 import React from "react"
 // @ts-ignore
 import CanvasJSReact from '@canvasjs/react-charts'
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart
 
 interface IChartProps {
-    dataPointsArrStateless: number[][],
-    functionWeightsStateless: number[],
+    dataPointsArr: number[][],
+    functionWeights: number[],
+
 }
 type chartPoint = {
     x: number,
     y: number
 }
-type chartErrorPoint = {
+type chartNonLinePoint = {
     x: number,
-    y: [number, number] | number
+    y: number[] | number
 }
 
-export default function Chart({dataPointsArrStateless, functionWeightsStateless}: IChartProps) {
-    const [funcPlot, setFuncPlot] = React.useState<chartPoint[]>([])
-    const [errorPlot, setErrorPlot] = React.useState<chartErrorPoint[]>([])
-    const [dataPointsArr, setdataPointsArr] = React.useState<number[][]>([])
-    React.useEffect(() => {
-        setdataPointsArr(dataPointsArrStateless)
-    }, [dataPointsArrStateless])
-    const [functionWeights, setFunctionWeights] = React.useState<number[]>([])
-    const calcFunctionVal = (x: number):number => {
-        return functionWeights.reduce((total, current, i) => total + current*(x**i), 0)
+const createScatterPlot = (points: number[][]) => {
+    const newPoints = points.map(point => { return { x: point[0], y: point[1] } })
+    return newPoints.sort((a, b) => { return a.x - b.x })
+}
+
+const createErrorPlot = (points: number[][], linePoints: number[][]) => {
+    const xPoints = points.map(point => point[0])
+    let filteredLinePoints = linePoints.filter(point => xPoints.includes(point[0]))
+    filteredLinePoints = filteredLinePoints.sort((a, b) => { return a[0] - b[0] })
+    if (points.length > 1) {
+    points = points.sort((a, b) => { return a[0] - b[0] })
+    return filteredLinePoints.map((p, i) => { return { x: p[0], y: [p[1], points[i][1]] } })
     }
-    const createFunctionPlot = (precision = 10) => {
-        const xPoints = dataPointsArr.map(p => { return p[0]})
-        const plotArr: chartPoint[] = [];
-        for (let i = Math.min(...xPoints)-precision; i < Math.max(...xPoints)+precision; i += precision) {
-            if (!xPoints.includes(i)) {
-                plotArr.push({x: i, y: calcFunctionVal(i)})
+    return [{x: points[0][0], y: points[0][1]}]
+}
+
+const calcFunctionVal = (x: number, weights: number[]): number => {
+    return weights.reduce((total, current, i) => total + current * (x ** i), 0)
+}
+
+const createLinePoints = (weights: number[], dataPoints: number[][]) => {
+    const linePlot: number[][] = [[dataPoints[0][0] / 2, calcFunctionVal(dataPoints[0][0] / 2, weights)]]
+    for (let i = 0; i < dataPoints.length - 1; i++) {
+        linePlot.push([dataPoints[i][0], calcFunctionVal(dataPoints[i][0], weights)])
+        linePlot.push([(dataPoints[i][0] + dataPoints[i + 1][0]) / 2, calcFunctionVal((dataPoints[i][0] + dataPoints[i + 1][0]) / 2, weights)])
+    }
+    linePlot.push([dataPoints[dataPoints.length - 1][0], calcFunctionVal(dataPoints[dataPoints.length - 1][0], weights)])
+    if (dataPoints.length > 1) {
+    linePlot.push([dataPoints[dataPoints.length - 1][0]*2 - dataPoints[dataPoints.length - 2][0], calcFunctionVal(dataPoints[dataPoints.length - 1][0]*2 - dataPoints[dataPoints.length - 2][0], weights)])
+    }
+    return linePlot
+}
+
+const createLinePlot = (plot: number[][]) => {
+    return plot.map(p => { return { x: p[0], y: p[1] } })
+}
+
+export default function Chart({ dataPointsArr, functionWeights }: IChartProps) {
+    const [nonLinePlot, setNonLinePlot] = React.useState<chartNonLinePoint[]>()
+    const [linePlot, setLinePlot] = React.useState<chartPoint[]>()
+    React.useEffect(() => {
+        if (dataPointsArr.length) {
+            if (functionWeights.length === 1 && functionWeights[0] === 0) {
+                setNonLinePlot(createScatterPlot(dataPointsArr))
+            } else {
+                const points = createLinePoints(functionWeights, dataPointsArr)
+                setLinePlot(createLinePlot(points))
+                setNonLinePlot(createErrorPlot(dataPointsArr, points))
+                console.log(linePlot)
             }
         }
-        xPoints.forEach(point => plotArr.push({x: point, y: calcFunctionVal(point)}))
-        return plotArr.sort((a, b) => a.x - b.x)
-    }
-    const createErrorPlot = (funcPlot: chartPoint[]) => {
-        const xPoints = dataPointsArr.map(p => { return p[0]})
-        const errorPlotArr: chartErrorPoint[] = []
-        funcPlot.forEach(p => {
-            if (xPoints.includes(p.x)) {
-                dataPointsArr.forEach(point => { 
-                    if (point[0] === p.x) {
-                        errorPlotArr.push({x: p.x, y: functionWeights.length? [p.y, point[1]] : point[1]})
-                    }
-                })
-            }
-        })
-        return errorPlotArr
-    }
-    React.useEffect(() => {
-        setFunctionWeights(functionWeightsStateless)
-        setFuncPlot(createFunctionPlot())
-        setErrorPlot(createErrorPlot(funcPlot))
-    }, [functionWeightsStateless])
+    }, [dataPointsArr, functionWeights])
     const options = {
         animationEnabled: true,
-		exportEnabled: true,
+        exportEnabled: true,
         theme: "dark1",
-        data: functionWeights.length? [{
-          type: "spline",
-          dataPoints: funcPlot
+        data: functionWeights.length === 1 && functionWeights[0] === 0 ? [{
+            type: "scatter",
+            dataPoints: nonLinePlot,
+            markerSize: 15
+        }] : [{
+            type: "spline",
+            dataPoints: linePlot
         },
         {
-          type: "error",
-          dataPoints: errorPlot
-        }] : [
-          {
-            type: "scatter",
-            markerSize: 15,
-            dataPoints: errorPlot
-          }]
-      }
-      return (
-        <div style={{padding: "0"}}>
-          <CanvasJSChart options = {options}/>
+            type: "error",
+            dataPoints: nonLinePlot
+        }]
+    }
+    return (
+        <div style={{ padding: "0" }}>
+            <CanvasJSChart options={options} />
         </div>
-      );
+    )
 }
