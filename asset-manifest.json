@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/polynomial-reg-ui/static/css/main.073c9b0a.css",
+    "main.js": "/polynomial-reg-ui/static/js/main.f90c0002.js",
+    "static/js/787.ee92d153.chunk.js": "/polynomial-reg-ui/static/js/787.ee92d153.chunk.js",
+    "index.html": "/polynomial-reg-ui/index.html",
+    "main.073c9b0a.css.map": "/polynomial-reg-ui/static/css/main.073c9b0a.css.map",
+    "main.f90c0002.js.map": "/polynomial-reg-ui/static/js/main.f90c0002.js.map",
+    "787.ee92d153.chunk.js.map": "/polynomial-reg-ui/static/js/787.ee92d153.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.f90c0002.js"
+  ]
+}
