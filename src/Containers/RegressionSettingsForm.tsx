@@ -44,8 +44,8 @@ export default function RegressionSettingsForm(props: IRegressionSettingsFormPro
                     <Form.Text muted style={{textAlign: "start", alignSelf: "start"}}>Recommended: 0.001-0.00001</Form.Text>
                 </FloatingLabel>
                 <Stack direction="horizontal" gap={0} style={{display: "grid", gridTemplate: "1fr 1fr/ 2fr 1fr 1fr"}}>
-                <FloatingLabel label="Highest degree of X" style={{display: "flex", flexDirection: "column"}}>
-                    <Form.Control type="number" placeholder="0" value={props.xDegree} onChange={handleXDegreeChange} step="1" min="0"/>
+                <FloatingLabel label="Amount of terms" style={{display: "flex", flexDirection: "column"}}>
+                    <Form.Control type="number" placeholder="0" value={props.xDegree} onChange={handleXDegreeChange} step="1" min="1"/>
                 </FloatingLabel>
                 <Button variant="primary" style={{justifySelf: "center", height: "90%"}} 
                 disabled={props.isRunning} onClick={e => {handleAdaptiveSubmit()}}>Run (adaptive)</Button>

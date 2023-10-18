@@ -15,19 +15,20 @@ function App() {
   const [iterations, setIterations] = React.useState(0)
   const [learningRate, setLearningRate] = React.useState(0)
   const [xDegree, setXDegree] = React.useState(0)
-  const [isRunning, setIsRunning] = React.useState(false)
+  let [isRunning, setIsRunning] = React.useState(false)
   const startTraining = (isAdaptive: boolean) => {
     const xVals = dataPoints.map(p => { return p[0]})
     const yVals = dataPoints.map(p => { return p[1]})
-    const weights = new Array(xDegree).fill(0)
-    isAdaptive? trainAdaptive(xVals, yVals, weights, new Array(xDegree).fill(learningRate), iterations)
-    : trainUnadaptive(xVals, yVals, weights, learningRate, iterations)
+    const startingWeights = new Array(xDegree).fill(0)
+    isAdaptive? trainAdaptive(xVals, yVals, startingWeights, new Array(xDegree).fill(learningRate), iterations)
+    : trainUnadaptive(xVals, yVals, startingWeights, learningRate, iterations)
   }
   const [weights, setWeights] = React.useState<number[]>(data.weights)
   React.useEffect(() => {
     const intervalID = setInterval(() => {
+      setIsRunning(data.isRunning)
       if (data.isRunning) {
-        setWeights(data.weights)
+        setWeights([...data.weights])
       }
     }, 100)
     return () => clearInterval(intervalID)

@@ -65,7 +65,6 @@ export default function Chart({ dataPointsArr, functionWeights }: IChartProps) {
                 const points = createLinePoints(functionWeights, dataPointsArr)
                 setLinePlot(createLinePlot(points))
                 setNonLinePlot(createErrorPlot(dataPointsArr, points))
-                console.log(linePlot)
             }
         }
     }, [dataPointsArr, functionWeights])
