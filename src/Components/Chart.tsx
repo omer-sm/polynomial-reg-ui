@@ -72,6 +72,13 @@ export default function Chart({ dataPointsArr, functionWeights }: IChartProps) {
         animationEnabled: true,
         exportEnabled: true,
         theme: "dark1",
+        zoomEnabled: true,
+        backgroundColor: "#00000000",
+        toolbar: {
+            itemBackgroundColor: "var(--bs-primary)",
+            itemBackgroundColorOnHover: "var(--bs-primary-border-subtle)",
+            buttonBorderColor: "transparent",
+        },
         data: functionWeights.length === 1 && functionWeights[0] === 0 ? [{
             type: "scatter",
             dataPoints: nonLinePlot,

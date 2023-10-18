@@ -42,8 +42,9 @@ function App() {
     <div className="App">
       <Container fluid>
         <Row>
-          <Navbar style={{backgroundColor: "var(--bs-indigo)"}}>
+          <Navbar style={{backgroundColor: "var(--bs-indigo)", justifyContent: "space-between"}}>
             <h3 style={{fontFamily: "Inter", margin: "0.1rem 1rem", letterSpacing: "-0.05rem"}}>Polynomial Finder</h3>
+            <p style={{fontFamily: "Inter", letterSpacing: "-0.05rem", textAlign: "center", margin: "0rem 1rem", alignSelf: "end"}}>by Omer Smorodinsky (<a href="https://github.com/omer-sm/polynomial-reg-ui" target="_blank">GitHub</a>)</p>
           </Navbar>
         </Row>
         <Row>

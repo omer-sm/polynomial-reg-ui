@@ -50,7 +50,7 @@ export const trainUnadaptive = (xVals: number[], yVals: number[], weights: numbe
         })
         jVals.push(currentJVals.reduce((total, current) => total + current) / currentJVals.length)
         data.j = jVals[iter-1]
-    }, 10)
+    }, 1)
     return [weights, jVals]
 }
 
@@ -92,6 +92,6 @@ export const trainAdaptive = (xVals: number[], yVals: number[], weights: number[
             data.weights = weights
         jVals.push(currentJVals.reduce((total, current) => total + current) / currentJVals.length)
         data.j = jVals[iter-1]
-    }, 10)
+    }, 1)
     return [weights, jVals]
 }

@@ -2,6 +2,7 @@ import React from "react"
 import ListGroup from "react-bootstrap/ListGroup"
 import Form from "react-bootstrap/Form"
 
+
 interface IStatsContainerProps {
     cost: number,
     weights: number[],
@@ -29,9 +30,11 @@ export default function StatsContainer({cost, weights, iteration, }: IStatsConta
                 Cost (J): {cost.toPrecision(3)}
                 <Form.Text muted style={{margin: "0"}}>{cost}</Form.Text>
             </ListGroup.Item>
-            <ListGroup.Item style={{textAlign: "start", display: "flex", flexDirection: "column", flexWrap: "nowrap"}}>
+            <ListGroup.Item style={{textAlign: "start", display: "flex", flexDirection: "column", flexWrap: "nowrap"}} variant={cost === -1 ? "danger" : ""}>
                 Function:
-                {weights.reverse().map((weight, i) => {return makeWeightText(weight, i, weights.length)})}
+                {cost === -1 ? " invalid :(" : 
+                weights.reverse().map((weight, i) => {return makeWeightText(weight, i, weights.length)})}
+                {cost === -1 && <Form.Text style={{margin: "0"}} className="text-danger-emphasis">Try lowering your learning rate or amount of terms, and switching to adaptive training (if you aren't using it already)</Form.Text>}
             </ListGroup.Item>
         </ListGroup>
     )
