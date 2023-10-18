@@ -49,9 +49,8 @@ export const trainUnadaptive = (xVals: number[], yVals: number[], weights: numbe
             data.weights = weights
         })
         jVals.push(currentJVals.reduce((total, current) => total + current) / currentJVals.length)
-        data.j = jVals[iter]
+        data.j = jVals[iter-1]
     }, 10)
-    setTimeout(() => { data.isRunning = false }, 1000)
     return [weights, jVals]
 }
 
@@ -79,18 +78,20 @@ export const trainAdaptive = (xVals: number[], yVals: number[], weights: number[
             return [weights, jVals]
         }
         const currentJVals: number[] = []
+        const weightDerivs: number[] = new Array(weights.length).fill(0)
         xVals.forEach((x, index) => {
-            const [weightDerivs, j] = calcJ(x, yVals[index], weights)
+            const [currentWeightDerivs, j] = calcJ(x, yVals[index], weights)
+            currentWeightDerivs.forEach((w, i) => {weightDerivs[i] += w})
             currentJVals.push(j)
-            learningRates = learningRates.map((learningRate, i) => {
-                return learningRate * (weightDerivs[i] * learningRate > 0 ? 1.1 : -0.5)
-            })
-            weights = weights.map((current, i) => current - learningRates[i])
-            data.weights = weights
         })
+        weightDerivs.forEach((w, i) => {weightDerivs[i] /= xVals.length})
+        learningRates = learningRates.map((learningRate, i) => {
+            return learningRate * (weightDerivs[i] * learningRate > 0 ? 1.1 : -0.5)
+        })
+        weights = weights.map((current, i) => current - learningRates[i])
+            data.weights = weights
         jVals.push(currentJVals.reduce((total, current) => total + current) / currentJVals.length)
-        data.j = jVals[iter]
+        data.j = jVals[iter-1]
     }, 10)
-    setTimeout(() => { data.isRunning = false }, 1000)
     return [weights, jVals]
 }

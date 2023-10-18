@@ -3,6 +3,8 @@ import Form from "react-bootstrap/Form"
 import FloatingLabel from "react-bootstrap/FloatingLabel"
 import Stack from "react-bootstrap/Stack"
 import Button from "react-bootstrap/Button"
+import Row from "react-bootstrap/Row"
+
 
 interface IRegressionSettingsFormProps {
     trainAdaptive: Function,
@@ -41,18 +43,18 @@ export default function RegressionSettingsForm(props: IRegressionSettingsFormPro
                 </FloatingLabel>
                 <FloatingLabel label="Learning rate" style={{display: "flex", flexDirection: "column"}}>
                     <Form.Control type="number" placeholder="0" value={props.learningRate} onChange={handleLearningRateChange} step="0.001"/>
-                    <Form.Text muted style={{textAlign: "start", alignSelf: "start"}}>Recommended: 0.001-0.00001</Form.Text>
+                    <Form.Text muted style={{textAlign: "start", alignSelf: "start"}}>Recommended: 100-0.01 for adaptive, 0.001-0.00001 for unadaptive</Form.Text>
                 </FloatingLabel>
-                <Stack direction="horizontal" gap={0} style={{display: "grid", gridTemplate: "1fr 1fr/ 2fr 1fr 1fr"}}>
                 <FloatingLabel label="Amount of terms" style={{display: "flex", flexDirection: "column"}}>
                     <Form.Control type="number" placeholder="0" value={props.xDegree} onChange={handleXDegreeChange} step="1" min="1"/>
+                    <Form.Text muted style={{textAlign: "start", justifySelf: "start"}}>Recommended: 1-5</Form.Text>
                 </FloatingLabel>
-                <Button variant="primary" style={{justifySelf: "center", height: "90%"}} 
+                <Row style={{display: "flex", justifyContent: "space-evenly"}}>
+                <Button variant="primary" style={{justifySelf: "center", height: "90%", width: "40%"}} 
                 disabled={props.isRunning} onClick={e => {handleAdaptiveSubmit()}}>Run (adaptive)</Button>
-                <Button variant="secondary" style={{justifySelf: "center", height: "90%"}}
+                <Button variant="secondary" style={{justifySelf: "center", height: "90%", width: "40%"}}
                  disabled={props.isRunning} onClick={e => {handleUnadaptiveSubmit()}}>Run (unadaptive)</Button>
-                <Form.Text muted style={{textAlign: "start", alignSelf: "start", gridArea: "2 / 1 / 3 / 2"}}>Recommended: 1-5</Form.Text>
-                </Stack>
+                </Row>
         </Stack>
             
     )

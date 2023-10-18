@@ -9,12 +9,15 @@ import ConfigSectionTitle from './Components/ConfigSectionTitle';
 import DataPointsContainer from './Containers/DataPointsContainer';
 import RegressionSettingsForm from './Containers/RegressionSettingsForm';
 import { trainAdaptive, trainUnadaptive, data} from './RegressionScript';
+import StatsContainer from './Containers/StatsContainer';
 
 function App() {
   const [dataPoints, setDataPoints] = React.useState<number[][]>([])
   const [iterations, setIterations] = React.useState(0)
   const [learningRate, setLearningRate] = React.useState(0)
   const [xDegree, setXDegree] = React.useState(0)
+  const [currentIteration, setCurrentIteration] = React.useState(0)
+  const [currentCost, setCurrentCost] = React.useState(0)
   let [isRunning, setIsRunning] = React.useState(false)
   const startTraining = (isAdaptive: boolean) => {
     const xVals = dataPoints.map(p => { return p[0]})
@@ -29,6 +32,8 @@ function App() {
       setIsRunning(data.isRunning)
       if (data.isRunning) {
         setWeights([...data.weights])
+        setCurrentIteration(data.iteration)
+        setCurrentCost(data.j)
       }
     }, 100)
     return () => clearInterval(intervalID)
@@ -59,6 +64,7 @@ function App() {
           </Col>
           <Col sm={12} md={4} xxl={5}>
           <ConfigSectionTitle title="Stats"/>
+          <StatsContainer cost={currentCost} weights={weights} iteration={currentIteration} />
           </Col>
         </Row>
       </Container>
