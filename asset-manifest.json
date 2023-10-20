@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/polynomial-reg-ui/static/css/main.073c9b0a.css",
-    "main.js": "/polynomial-reg-ui/static/js/main.76ddac4e.js",
+    "main.js": "/polynomial-reg-ui/static/js/main.5f3589a3.js",
     "static/js/787.ee92d153.chunk.js": "/polynomial-reg-ui/static/js/787.ee92d153.chunk.js",
     "index.html": "/polynomial-reg-ui/index.html",
     "main.073c9b0a.css.map": "/polynomial-reg-ui/static/css/main.073c9b0a.css.map",
-    "main.76ddac4e.js.map": "/polynomial-reg-ui/static/js/main.76ddac4e.js.map",
+    "main.5f3589a3.js.map": "/polynomial-reg-ui/static/js/main.5f3589a3.js.map",
     "787.ee92d153.chunk.js.map": "/polynomial-reg-ui/static/js/787.ee92d153.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.073c9b0a.css",
-    "static/js/main.76ddac4e.js"
+    "static/js/main.5f3589a3.js"
   ]
 }
